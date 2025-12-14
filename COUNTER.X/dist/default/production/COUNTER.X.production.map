@@ -1,0 +1,48 @@
+MPLINK 5.09, LINKER
+Linker Map File - Created Mon Dec 15 01:19:29 2025
+
+                                 Section Info
+                  Section       Type    Address   Location Size(Bytes)
+                ---------  ---------  ---------  ---------  ---------
+                   .org_0       code   0x000000    program   0x000002
+                   .cinit    romdata   0x000001    program   0x000004
+                   .org_1       code   0x000004    program   0x000066
+.config_2007_BUILD/DEFAULT/PRODUCTION/COUNTER       code   0x002007    program   0x000002
+
+
+
+                              Program Memory Usage 
+                               Start         End      
+                           ---------   ---------      
+                            0x000000    0x000002      
+                            0x000004    0x000036      
+                            0x002007    0x002007      
+            55 out of 1094 program addresses used, program memory utilization is 5%
+
+
+
+                              Symbols - Sorted by Name
+                     Name    Address   Location    Storage File                     
+                ---------  ---------  ---------  --------- ---------                
+                    Blink   0x000024    program     static C:\users\kennethpabillo\MPLABXProjects\bit-banging\COUNTER.X\COUNTER.asm
+                    Delay   0x000029    program     static C:\users\kennethpabillo\MPLABXProjects\bit-banging\COUNTER.X\COUNTER.asm
+                     Init   0x000004    program     static C:\users\kennethpabillo\MPLABXProjects\bit-banging\COUNTER.X\COUNTER.asm
+                     Loop   0x000021    program     static C:\users\kennethpabillo\MPLABXProjects\bit-banging\COUNTER.X\COUNTER.asm
+                    Start   0x00000c    program     static C:\users\kennethpabillo\MPLABXProjects\bit-banging\COUNTER.X\COUNTER.asm
+                     loop   0x00002f    program     static C:\users\kennethpabillo\MPLABXProjects\bit-banging\COUNTER.X\COUNTER.asm
+                  retfile   0x000004    program     static C:\users\kennethpabillo\MPLABXProjects\bit-banging\COUNTER.X\COUNTER.asm
+
+
+
+                              Symbols - Sorted by Address
+                     Name    Address   Location    Storage File                     
+                ---------  ---------  ---------  --------- ---------                
+                     Init   0x000004    program     static C:\users\kennethpabillo\MPLABXProjects\bit-banging\COUNTER.X\COUNTER.asm
+                  retfile   0x000004    program     static C:\users\kennethpabillo\MPLABXProjects\bit-banging\COUNTER.X\COUNTER.asm
+                    Start   0x00000c    program     static C:\users\kennethpabillo\MPLABXProjects\bit-banging\COUNTER.X\COUNTER.asm
+                     Loop   0x000021    program     static C:\users\kennethpabillo\MPLABXProjects\bit-banging\COUNTER.X\COUNTER.asm
+                    Blink   0x000024    program     static C:\users\kennethpabillo\MPLABXProjects\bit-banging\COUNTER.X\COUNTER.asm
+                    Delay   0x000029    program     static C:\users\kennethpabillo\MPLABXProjects\bit-banging\COUNTER.X\COUNTER.asm
+                     loop   0x00002f    program     static C:\users\kennethpabillo\MPLABXProjects\bit-banging\COUNTER.X\COUNTER.asm
+
+

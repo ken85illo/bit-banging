@@ -1,0 +1,287 @@
+MPASM 5.87                       COUNTER.ASM   12-15-2025  1:19:28         PAGE  1
+
+
+LOC  OBJECT CODE     LINE SOURCE TEXT
+  VALUE
+
+Warning[205]: Found directive in column 1. (list)
+                      00001 list p=16f84a
+                      00002 #include <p16f84a.inc>
+                      00001         LIST
+                      00002 
+                      00003 ;==========================================================================
+                      00004 ; Build date : Jan 06 2020
+                      00005 ;  MPASM PIC16F84A processor include
+                      00006 ; 
+                      00007 ;  (c) Copyright 1999-2020 Microchip Technology, All rights reserved
+                      00008 ;==========================================================================
+                      00009 
+                      00209         LIST
+Warning[205]: Found directive in column 1. (__CONFIG)
+2007   3FF1           00003 __CONFIG _CP_OFF & _PWRTE_ON & _WDT_OFF & _XT_OSC
+                      00004     
+  00000003            00005 STATUS EQU 03H
+  00000005            00006 PORTA EQU 05H
+  00000006            00007 PORTB EQU 06H
+  00000085            00008 TRISA EQU 85H
+  00000086            00009 TRISB EQU 86H
+  0000000C            00010 CounterC EQU 0CH
+  0000000D            00011 CounterB EQU 0DH
+  0000000E            00012 CounterA EQU 0EH
+  0000000F            00013 TEMP EQU 0FH
+  0000001F            00014 BitBang EQU 1FH
+                      00015 
+                      00016         ORG 00h
+0000   2???           00017                 goto Init
+                      00018         ORG 04h
+Warning[207]: Found label after column 1. (retfile)
+0004                  00019                 retfile
+0004                  00020 Init
+                      00021 
+Warning[203]: Found opcode in column 1. (BSF)
+0004   1683           00022 BSF STATUS, 5
+Warning[203]: Found opcode in column 1. (MOVLW)
+0005   301F           00023 MOVLW 0x1F
+Warning[203]: Found opcode in column 1. (MOVWF)
+Message[302]: Register in operand not in bank 0.  Ensure that bank bits are correct.
+0006   0085           00024 MOVWF TRISA
+Warning[203]: Found opcode in column 1. (MOVLW)
+0007   300F           00025 MOVLW 0X0F
+Warning[203]: Found opcode in column 1. (MOVWF)
+Message[302]: Register in operand not in bank 0.  Ensure that bank bits are correct.
+0008   0086           00026 MOVWF TRISB
+Warning[203]: Found opcode in column 1. (BCF)
+0009   1283           00027 BCF STATUS, 5
+Warning[203]: Found opcode in column 1. (MOVLW)
+000A   3000           00028 MOVLW 0x00
+Warning[203]: Found opcode in column 1. (MOVWF)
+000B   0086           00029 MOVWF PORTB
+                      00030 
+MPASM 5.87                       COUNTER.ASM   12-15-2025  1:19:28         PAGE  2
+
+
+LOC  OBJECT CODE     LINE SOURCE TEXT
+  VALUE
+
+                      00031 
+000C                  00032 Start
+                      00033 
+Warning[203]: Found opcode in column 1. (MOVLW)
+000C   3000           00034 MOVLW D'0' ; 0 is default value
+                      00035 
+                      00036 ; Bit bang counter 1-9  
+Warning[203]: Found opcode in column 1. (BTFSC)
+000D   1805           00037 BTFSC PORTA, 0
+Warning[203]: Found opcode in column 1. (MOVLW)
+000E   3001           00038 MOVLW D'1'
+Warning[203]: Found opcode in column 1. (BTFSC)
+000F   1885           00039 BTFSC PORTA, 1
+Warning[203]: Found opcode in column 1. (MOVLW)
+0010   3002           00040 MOVLW D'2'
+Warning[203]: Found opcode in column 1. (BTFSC)
+0011   1905           00041 BTFSC PORTA, 2
+Warning[203]: Found opcode in column 1. (MOVLW)
+0012   3003           00042 MOVLW D'3'
+Warning[203]: Found opcode in column 1. (BTFSC)
+0013   1985           00043 BTFSC PORTA, 3
+Warning[203]: Found opcode in column 1. (MOVLW)
+0014   3004           00044 MOVLW D'4'
+Warning[203]: Found opcode in column 1. (BTFSC)
+0015   1A05           00045 BTFSC PORTA, 4
+Warning[203]: Found opcode in column 1. (MOVLW)
+0016   3005           00046 MOVLW D'5'
+Warning[203]: Found opcode in column 1. (BTFSC)
+0017   1806           00047 BTFSC PORTB, 0
+Warning[203]: Found opcode in column 1. (MOVLW)
+0018   3006           00048 MOVLW D'6'
+Warning[203]: Found opcode in column 1. (BTFSC)
+0019   1886           00049 BTFSC PORTB, 1
+Warning[203]: Found opcode in column 1. (MOVLW)
+001A   3007           00050 MOVLW D'7'
+Warning[203]: Found opcode in column 1. (BTFSC)
+001B   1906           00051 BTFSC PORTB, 2
+Warning[203]: Found opcode in column 1. (MOVLW)
+001C   3008           00052 MOVLW D'8'
+Warning[203]: Found opcode in column 1. (BTFSC)
+001D   1986           00053 BTFSC PORTB, 3
+Warning[203]: Found opcode in column 1. (MOVLW)
+001E   3009           00054 MOVLW D'9'
+                      00055 
+Warning[203]: Found opcode in column 1. (ADDLW)
+001F   3E01           00056 ADDLW D'1' ; offset by 1
+Warning[203]: Found opcode in column 1. (MOVWF)
+0020   009F           00057 MOVWF BitBang
+0021                  00058 Loop
+0021   0B9F           00059      DECFSZ BitBang, 1
+0022   2???           00060      goto Blink
+                      00061 
+Warning[203]: Found opcode in column 1. (goto)
+MPASM 5.87                       COUNTER.ASM   12-15-2025  1:19:28         PAGE  3
+
+
+LOC  OBJECT CODE     LINE SOURCE TEXT
+  VALUE
+
+0023   2???           00062 goto Start
+                      00063 
+0024                  00064 Blink
+0024   1606           00065     BSF PORTB, 4
+0025   2???           00066     Call Delay
+0026   1206           00067     BCF PORTB, 4
+0027   2???           00068     Call Delay
+0028   2???           00069     goto Loop
+                      00070                 
+0029                  00071 Delay
+0029   3006           00072     movlw D'6'
+002A   008C           00073     movwf CounterC
+002B   3018           00074     movlw D'24'
+002C   008D           00075     movwf CounterB
+002D   30A7           00076     movlw D'167'
+002E   008E           00077     movwf CounterA
+                      00078    
+002F                  00079 loop
+002F   0B8E           00080     decfsz CounterA, 1
+0030   2???           00081     goto loop
+0031   0B8D           00082     decfsz CounterB, 1
+0032   2???           00083     goto loop
+0033   0B8C           00084     decfsz CounterC, 1
+0034   2???           00085     goto loop
+0035   0000           00086     nop
+0036   0008           00087     return
+                      00088 
+Warning[205]: Found directive in column 1. (end)
+3FF1                  00089 end
+MPASM 5.87                       COUNTER.ASM   12-15-2025  1:19:28         PAGE  4
+
+
+SYMBOL TABLE
+  LABEL                             VALUE 
+
+BitBang                           0000001F
+Blink                             00000024
+C                                 00000000
+CounterA                          0000000E
+CounterB                          0000000D
+CounterC                          0000000C
+DC                                00000001
+Delay                             00000029
+EEADR                             00000009
+EECON1                            00000088
+EECON2                            00000089
+EEDATA                            00000008
+EEIE                              00000006
+EEIF                              00000004
+F                                 00000001
+FSR                               00000004
+GIE                               00000007
+INDF                              00000000
+INTCON                            0000000B
+INTE                              00000004
+INTEDG                            00000006
+INTF                              00000001
+IRP                               00000007
+Init                              00000004
+Loop                              00000021
+NOT_PD                            00000003
+NOT_RBPU                          00000007
+NOT_TO                            00000004
+OPTION_REG                        00000081
+PCL                               00000002
+PCLATH                            0000000A
+PORTA                             00000005
+PORTB                             00000006
+PS0                               00000000
+PS1                               00000001
+PS2                               00000002
+PSA                               00000003
+RA0                               00000000
+RA1                               00000001
+RA2                               00000002
+RA3                               00000003
+RA4                               00000004
+RB0                               00000000
+RB1                               00000001
+RB2                               00000002
+RB3                               00000003
+RB4                               00000004
+RB5                               00000005
+RB6                               00000006
+RB7                               00000007
+RBIE                              00000003
+RBIF                              00000000
+RD                                00000000
+MPASM 5.87                       COUNTER.ASM   12-15-2025  1:19:28         PAGE  5
+
+
+SYMBOL TABLE
+  LABEL                             VALUE 
+
+RP0                               00000005
+RP1                               00000006
+STATUS                            00000003
+Start                             0000000C
+T0CS                              00000005
+T0IE                              00000005
+T0IF                              00000002
+T0SE                              00000004
+TEMP                              0000000F
+TMR0                              00000001
+TMR0IE                            00000005
+TMR0IF                            00000002
+TRISA                             00000085
+TRISA0                            00000000
+TRISA1                            00000001
+TRISA2                            00000002
+TRISA3                            00000003
+TRISA4                            00000004
+TRISB                             00000086
+TRISB0                            00000000
+TRISB1                            00000001
+TRISB2                            00000002
+TRISB3                            00000003
+TRISB4                            00000004
+TRISB5                            00000005
+TRISB6                            00000006
+TRISB7                            00000007
+W                                 00000000
+WR                                00000001
+WREN                              00000002
+WRERR                             00000003
+Z                                 00000002
+_CONFIG                           00002007
+_CP_OFF                           00003FFF
+_CP_ON                            0000000F
+_DEVID1                           00002006
+_FOSC_EXTRC                       00003FFF
+_FOSC_HS                          00003FFE
+_FOSC_LP                          00003FFC
+_FOSC_XT                          00003FFD
+_HS_OSC                           00003FFE
+_IDLOC0                           00002000
+_IDLOC1                           00002001
+_IDLOC2                           00002002
+_IDLOC3                           00002003
+_LP_OSC                           00003FFC
+_PWRTE_OFF                        00003FFF
+_PWRTE_ON                         00003FF7
+_RC_OSC                           00003FFF
+_WDTE_OFF                         00003FFB
+_WDTE_ON                          00003FFF
+_WDT_OFF                          00003FFB
+_WDT_ON                           00003FFF
+MPASM 5.87                       COUNTER.ASM   12-15-2025  1:19:28         PAGE  6
+
+
+SYMBOL TABLE
+  LABEL                             VALUE 
+
+_XT_OSC                           00003FFD
+__16F84A                          00000001
+loop                              0000002F
+retfile                           00000004
+
+Errors   :     0
+Warnings :    34 reported,     0 suppressed
+Messages :     2 reported,     0 suppressed
+
+
