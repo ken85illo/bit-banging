@@ -1,4 +1,4 @@
-MPASM 5.87                       COUNTER.ASM   12-15-2025  10:46:54         PAGE  1
+MPASM 5.87                       DECODER.ASM   12-15-2025  10:59:36         PAGE  1
 
 
 LOC  OBJECT CODE     LINE SOURCE TEXT
@@ -41,137 +41,87 @@ Warning[207]: Found label after column 1. (retfile)
 Warning[203]: Found opcode in column 1. (BSF)
 0004   1683           00022 BSF STATUS, 5
 Warning[203]: Found opcode in column 1. (MOVLW)
-0005   301F           00023 MOVLW 0x1F
+0005   3007           00023 MOVLW 0x07
 Warning[203]: Found opcode in column 1. (MOVWF)
 Message[302]: Register in operand not in bank 0.  Ensure that bank bits are correct.
 0006   0085           00024 MOVWF TRISA
 Warning[203]: Found opcode in column 1. (MOVLW)
-0007   300F           00025 MOVLW 0X0F
+0007   3000           00025 MOVLW 0X00
 Warning[203]: Found opcode in column 1. (MOVWF)
 Message[302]: Register in operand not in bank 0.  Ensure that bank bits are correct.
 0008   0086           00026 MOVWF TRISB
 Warning[203]: Found opcode in column 1. (BCF)
 0009   1283           00027 BCF STATUS, 5
 Warning[203]: Found opcode in column 1. (CLRF)
-000A   0186           00028 CLRF PORTB
-                      00029 
+000A   0185           00028 CLRF PORTA
+Warning[203]: Found opcode in column 1. (CLRF)
+000B   0186           00029 CLRF PORTB
                       00030 
-000B                  00031 Start
-MPASM 5.87                       COUNTER.ASM   12-15-2025  10:46:54         PAGE  2
+MPASM 5.87                       DECODER.ASM   12-15-2025  10:59:36         PAGE  2
 
 
 LOC  OBJECT CODE     LINE SOURCE TEXT
   VALUE
 
-                      00032 
-Warning[203]: Found opcode in column 1. (MOVLW)
-000B   3000           00033 MOVLW D'0' ; 0 is default value
-                      00034 
-                      00035 ; Bit bang counter 1-9  
-Warning[203]: Found opcode in column 1. (BTFSC)
-000C   1805           00036 BTFSC PORTA, 0
-Warning[203]: Found opcode in column 1. (MOVLW)
-000D   3001           00037 MOVLW D'1'
-Warning[203]: Found opcode in column 1. (BTFSC)
-000E   1885           00038 BTFSC PORTA, 1
-Warning[203]: Found opcode in column 1. (MOVLW)
-000F   3002           00039 MOVLW D'2'
-Warning[203]: Found opcode in column 1. (BTFSC)
-0010   1905           00040 BTFSC PORTA, 2
-Warning[203]: Found opcode in column 1. (MOVLW)
-0011   3003           00041 MOVLW D'3'
-Warning[203]: Found opcode in column 1. (BTFSC)
-0012   1985           00042 BTFSC PORTA, 3
-Warning[203]: Found opcode in column 1. (MOVLW)
-0013   3004           00043 MOVLW D'4'
-Warning[203]: Found opcode in column 1. (BTFSC)
-0014   1A05           00044 BTFSC PORTA, 4
-Warning[203]: Found opcode in column 1. (MOVLW)
-0015   3005           00045 MOVLW D'5'
-Warning[203]: Found opcode in column 1. (BTFSC)
-0016   1806           00046 BTFSC PORTB, 0
-Warning[203]: Found opcode in column 1. (MOVLW)
-0017   3006           00047 MOVLW D'6'
-Warning[203]: Found opcode in column 1. (BTFSC)
-0018   1886           00048 BTFSC PORTB, 1
-Warning[203]: Found opcode in column 1. (MOVLW)
-0019   3007           00049 MOVLW D'7'
-Warning[203]: Found opcode in column 1. (BTFSC)
-001A   1906           00050 BTFSC PORTB, 2
-Warning[203]: Found opcode in column 1. (MOVLW)
-001B   3008           00051 MOVLW D'8'
-Warning[203]: Found opcode in column 1. (BTFSC)
-001C   1986           00052 BTFSC PORTB, 3
-Warning[203]: Found opcode in column 1. (MOVLW)
-001D   3009           00053 MOVLW D'9'
-                      00054 
-Warning[203]: Found opcode in column 1. (ADDLW)
-001E   3E01           00055 ADDLW D'1' ; offset by 1
-Warning[203]: Found opcode in column 1. (ADDWF)
-Message[305]: Using default destination of 1 (file).
-001F   079F           00056 ADDWF BitBang
-0020                  00057 Loop
-0020   0B9F           00058      DECFSZ BitBang, 1
-0021   2???           00059      goto Blink
-                      00060 
-                      00061 ; Set RA5 to 0 (off)
-Warning[203]: Found opcode in column 1. (BCF)
-MPASM 5.87                       COUNTER.ASM   12-15-2025  10:46:54         PAGE  3
-
-
-LOC  OBJECT CODE     LINE SOURCE TEXT
-  VALUE
-
-0022   1286           00062 BCF PORTB, 5
-                      00063      
+000C                  00031 Start 
+000C   1805           00032    BTFSC PORTA, 0
+000D   2???           00033    call Count
+000E   1D05           00034    BTFSS PORTA, 2
+000F   2???           00035    call Clear
 Warning[203]: Found opcode in column 1. (goto)
-0023   2???           00064 goto Start
-                      00065 
-0024                  00066 Blink
-                      00067     ; Set RA5 to 1 (on)
-0024   1E86           00068     BTFSS PORTB, 5
-0025   1686           00069     BSF PORTB, 5
-                      00070     
-0026   2???           00071     Call Delay
-0027   1606           00072     BSF PORTB, 4
-0028   2???           00073     Call Delay
-0029   1206           00074     BCF PORTB, 4
-002A   2???           00075     goto Loop
-                      00076                 
-002B                  00077 Delay
-002B   3006           00078     movlw D'6'
-002C   008C           00079     movwf CounterC
-002D   3018           00080     movlw D'24'
-002E   008D           00081     movwf CounterB
-002F   30A7           00082     movlw D'167'
-0030   008E           00083     movwf CounterA
-                      00084    
-0031                  00085 loop
-0031   0B8E           00086     decfsz CounterA, 1
-0032   2???           00087     goto loop
-0033   0B8D           00088     decfsz CounterB, 1
-0034   2???           00089     goto loop
-0035   0B8C           00090     decfsz CounterC, 1
-0036   2???           00091     goto loop
-0037   0000           00092     nop
-0038   0008           00093     return
-                      00094 
+0010   2???           00036 goto Start
+                      00037 
+0011                  00038 Count
+0011   2???           00039    call Increment
+0012   2???           00040    call Delay
+0013   0008           00041    return
+                      00042   
+0014                  00043 Clear
+0014   1C85           00044    BTFSS PORTA, 1
+0015   0186           00045    CLRF PORTB
+0016   0008           00046    return
+                      00047                    
+0017                  00048 Increment
+0017   3001           00049    MOVLW 0x01
+Message[305]: Using default destination of 1 (file).
+0018   0786           00050    ADDWF PORTB
+0019   0008           00051    return
+                      00052                 
+001A                  00053 Delay
+001A   3006           00054     movlw D'6'
+001B   008C           00055     movwf CounterC
+001C   3018           00056     movlw D'24'
+001D   008D           00057     movwf CounterB
+001E   30A7           00058     movlw D'167'
+001F   008E           00059     movwf CounterA
+                      00060    
+0020                  00061 loop
+0020   0B8E           00062     decfsz CounterA, 1
+0021   2???           00063     goto loop
+0022   0B8D           00064     decfsz CounterB, 1
+0023   2???           00065     goto loop
+0024   0B8C           00066     decfsz CounterC, 1
+0025   2???           00067     goto loop
+0026   0000           00068     nop
+0027   0008           00069     return
+                      00070 
 Warning[205]: Found directive in column 1. (end)
-3FF1                  00095 end
-MPASM 5.87                       COUNTER.ASM   12-15-2025  10:46:54         PAGE  4
+3FF1                  00071 end
+MPASM 5.87                       DECODER.ASM   12-15-2025  10:59:36         PAGE  3
 
 
 SYMBOL TABLE
   LABEL                             VALUE 
 
 BitBang                           0000001F
-Blink                             00000024
 C                                 00000000
+Clear                             00000014
+Count                             00000011
 CounterA                          0000000E
 CounterB                          0000000D
 CounterC                          0000000C
 DC                                00000001
-Delay                             0000002B
+Delay                             0000001A
 EEADR                             00000009
 EECON1                            00000088
 EECON2                            00000089
@@ -187,8 +137,8 @@ INTE                              00000004
 INTEDG                            00000006
 INTF                              00000001
 IRP                               00000007
+Increment                         00000017
 Init                              00000004
-Loop                              00000020
 NOT_PD                            00000003
 NOT_RBPU                          00000007
 NOT_TO                            00000004
@@ -216,17 +166,17 @@ RB6                               00000006
 RB7                               00000007
 RBIE                              00000003
 RBIF                              00000000
-RD                                00000000
-MPASM 5.87                       COUNTER.ASM   12-15-2025  10:46:54         PAGE  5
+MPASM 5.87                       DECODER.ASM   12-15-2025  10:59:36         PAGE  4
 
 
 SYMBOL TABLE
   LABEL                             VALUE 
 
+RD                                00000000
 RP0                               00000005
 RP1                               00000006
 STATUS                            00000003
-Start                             0000000B
+Start                             0000000C
 T0CS                              00000005
 T0IE                              00000005
 T0IF                              00000002
@@ -275,20 +225,20 @@ _RC_OSC                           00003FFF
 _WDTE_OFF                         00003FFB
 _WDTE_ON                          00003FFF
 _WDT_OFF                          00003FFB
-_WDT_ON                           00003FFF
-MPASM 5.87                       COUNTER.ASM   12-15-2025  10:46:54         PAGE  6
+MPASM 5.87                       DECODER.ASM   12-15-2025  10:59:36         PAGE  5
 
 
 SYMBOL TABLE
   LABEL                             VALUE 
 
+_WDT_ON                           00003FFF
 _XT_OSC                           00003FFD
 __16F84A                          00000001
-loop                              00000031
+loop                              00000020
 retfile                           00000004
 
 Errors   :     0
-Warnings :    34 reported,     0 suppressed
+Warnings :    13 reported,     0 suppressed
 Messages :     3 reported,     0 suppressed
 
 

@@ -20,59 +20,35 @@ BitBang EQU 1FH
 Init
 
 BSF STATUS, 5
-MOVLW 0x1F
+MOVLW 0x07
 MOVWF TRISA
-MOVLW 0X0F
+MOVLW 0X00
 MOVWF TRISB
 BCF STATUS, 5
+CLRF PORTA
 CLRF PORTB
 
-
-Start
-
-MOVLW D'0' ; 0 is default value
-
-; Bit bang counter 1-9	
-BTFSC PORTA, 0
-MOVLW D'1'
-BTFSC PORTA, 1
-MOVLW D'2'
-BTFSC PORTA, 2
-MOVLW D'3'
-BTFSC PORTA, 3
-MOVLW D'4'
-BTFSC PORTA, 4
-MOVLW D'5'
-BTFSC PORTB, 0
-MOVLW D'6'
-BTFSC PORTB, 1
-MOVLW D'7'
-BTFSC PORTB, 2
-MOVLW D'8'
-BTFSC PORTB, 3
-MOVLW D'9'
-
-ADDLW D'1' ; offset by 1
-ADDWF BitBang
-Loop
-     DECFSZ BitBang, 1
-     goto Blink
-
-; Set RA5 to 0 (off)
-BCF PORTB, 5
-     
+Start 
+   BTFSC PORTA, 0
+   call Count
+   BTFSS PORTA, 2
+   call Clear
 goto Start
 
-Blink
-    ; Set RA5 to 1 (on)
-    BTFSS PORTB, 5
-    BSF PORTB, 5
-    
-    Call Delay
-    BSF PORTB, 4
-    Call Delay
-    BCF PORTB, 4
-    goto Loop
+Count
+   call Increment
+   call Delay
+   return
+  
+Clear
+   BTFSS PORTA, 1
+   CLRF PORTB
+   return
+		   
+Increment
+   MOVLW 0x01
+   ADDWF PORTB
+   return
 		
 Delay
     movlw D'6'
@@ -93,6 +69,9 @@ loop
     return
 
 end
+
+
+
 
 
 
