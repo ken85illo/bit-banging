@@ -41,6 +41,7 @@ Count
    return
   
 Clear
+   call Delay
    BTFSS PORTA, 1
    CLRF PORTB
    return

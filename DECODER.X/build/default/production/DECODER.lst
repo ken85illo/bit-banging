@@ -1,4 +1,4 @@
-MPASM 5.87                       DECODER.ASM   12-15-2025  10:59:36         PAGE  1
+MPASM 5.87                       DECODER.ASM   12-15-2025  11:03:59         PAGE  1
 
 
 LOC  OBJECT CODE     LINE SOURCE TEXT
@@ -57,7 +57,7 @@ Warning[203]: Found opcode in column 1. (CLRF)
 Warning[203]: Found opcode in column 1. (CLRF)
 000B   0186           00029 CLRF PORTB
                       00030 
-MPASM 5.87                       DECODER.ASM   12-15-2025  10:59:36         PAGE  2
+MPASM 5.87                       DECODER.ASM   12-15-2025  11:03:59         PAGE  2
 
 
 LOC  OBJECT CODE     LINE SOURCE TEXT
@@ -77,37 +77,38 @@ Warning[203]: Found opcode in column 1. (goto)
 0013   0008           00041    return
                       00042   
 0014                  00043 Clear
-0014   1C85           00044    BTFSS PORTA, 1
-0015   0186           00045    CLRF PORTB
-0016   0008           00046    return
-                      00047                    
-0017                  00048 Increment
-0017   3001           00049    MOVLW 0x01
+0014   2???           00044    call Delay
+0015   1C85           00045    BTFSS PORTA, 1
+0016   0186           00046    CLRF PORTB
+0017   0008           00047    return
+                      00048                    
+0018                  00049 Increment
+0018   3001           00050    MOVLW 0x01
 Message[305]: Using default destination of 1 (file).
-0018   0786           00050    ADDWF PORTB
-0019   0008           00051    return
-                      00052                 
-001A                  00053 Delay
-001A   3006           00054     movlw D'6'
-001B   008C           00055     movwf CounterC
-001C   3018           00056     movlw D'24'
-001D   008D           00057     movwf CounterB
-001E   30A7           00058     movlw D'167'
-001F   008E           00059     movwf CounterA
-                      00060    
-0020                  00061 loop
-0020   0B8E           00062     decfsz CounterA, 1
-0021   2???           00063     goto loop
-0022   0B8D           00064     decfsz CounterB, 1
-0023   2???           00065     goto loop
-0024   0B8C           00066     decfsz CounterC, 1
-0025   2???           00067     goto loop
-0026   0000           00068     nop
-0027   0008           00069     return
-                      00070 
+0019   0786           00051    ADDWF PORTB
+001A   0008           00052    return
+                      00053                 
+001B                  00054 Delay
+001B   3006           00055     movlw D'6'
+001C   008C           00056     movwf CounterC
+001D   3018           00057     movlw D'24'
+001E   008D           00058     movwf CounterB
+001F   30A7           00059     movlw D'167'
+0020   008E           00060     movwf CounterA
+                      00061    
+0021                  00062 loop
+0021   0B8E           00063     decfsz CounterA, 1
+0022   2???           00064     goto loop
+0023   0B8D           00065     decfsz CounterB, 1
+0024   2???           00066     goto loop
+0025   0B8C           00067     decfsz CounterC, 1
+0026   2???           00068     goto loop
+0027   0000           00069     nop
+0028   0008           00070     return
+                      00071 
 Warning[205]: Found directive in column 1. (end)
-3FF1                  00071 end
-MPASM 5.87                       DECODER.ASM   12-15-2025  10:59:36         PAGE  3
+3FF1                  00072 end
+MPASM 5.87                       DECODER.ASM   12-15-2025  11:03:59         PAGE  3
 
 
 SYMBOL TABLE
@@ -121,7 +122,7 @@ CounterA                          0000000E
 CounterB                          0000000D
 CounterC                          0000000C
 DC                                00000001
-Delay                             0000001A
+Delay                             0000001B
 EEADR                             00000009
 EECON1                            00000088
 EECON2                            00000089
@@ -137,7 +138,7 @@ INTE                              00000004
 INTEDG                            00000006
 INTF                              00000001
 IRP                               00000007
-Increment                         00000017
+Increment                         00000018
 Init                              00000004
 NOT_PD                            00000003
 NOT_RBPU                          00000007
@@ -166,7 +167,7 @@ RB6                               00000006
 RB7                               00000007
 RBIE                              00000003
 RBIF                              00000000
-MPASM 5.87                       DECODER.ASM   12-15-2025  10:59:36         PAGE  4
+MPASM 5.87                       DECODER.ASM   12-15-2025  11:03:59         PAGE  4
 
 
 SYMBOL TABLE
@@ -225,7 +226,7 @@ _RC_OSC                           00003FFF
 _WDTE_OFF                         00003FFB
 _WDTE_ON                          00003FFF
 _WDT_OFF                          00003FFB
-MPASM 5.87                       DECODER.ASM   12-15-2025  10:59:36         PAGE  5
+MPASM 5.87                       DECODER.ASM   12-15-2025  11:03:59         PAGE  5
 
 
 SYMBOL TABLE
@@ -234,7 +235,7 @@ SYMBOL TABLE
 _WDT_ON                           00003FFF
 _XT_OSC                           00003FFD
 __16F84A                          00000001
-loop                              00000020
+loop                              00000021
 retfile                           00000004
 
 Errors   :     0

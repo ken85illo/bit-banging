@@ -1,12 +1,12 @@
 MPLINK 5.09, LINKER
-Linker Map File - Created Mon Dec 15 10:59:37 2025
+Linker Map File - Created Mon Dec 15 11:04:00 2025
 
                                  Section Info
                   Section       Type    Address   Location Size(Bytes)
                 ---------  ---------  ---------  ---------  ---------
                    .org_0       code   0x000000    program   0x000002
                    .cinit    romdata   0x000001    program   0x000004
-                   .org_1       code   0x000004    program   0x000048
+                   .org_1       code   0x000004    program   0x00004a
 .config_2007_BUILD/DEFAULT/PRODUCTION/DECODER       code   0x002007    program   0x000002
 
 
@@ -15,9 +15,9 @@ Linker Map File - Created Mon Dec 15 10:59:37 2025
                                Start         End      
                            ---------   ---------      
                             0x000000    0x000002      
-                            0x000004    0x000027      
+                            0x000004    0x000028      
                             0x002007    0x002007      
-            40 out of 1094 program addresses used, program memory utilization is 3%
+            41 out of 1094 program addresses used, program memory utilization is 3%
 
 
 
@@ -26,11 +26,11 @@ Linker Map File - Created Mon Dec 15 10:59:37 2025
                 ---------  ---------  ---------  --------- ---------                
                     Clear   0x000014    program     static C:\users\kennethpabillo\MPLABXProjects\bit-banging\DECODER.X\DECODER.asm
                     Count   0x000011    program     static C:\users\kennethpabillo\MPLABXProjects\bit-banging\DECODER.X\DECODER.asm
-                    Delay   0x00001a    program     static C:\users\kennethpabillo\MPLABXProjects\bit-banging\DECODER.X\DECODER.asm
-                Increment   0x000017    program     static C:\users\kennethpabillo\MPLABXProjects\bit-banging\DECODER.X\DECODER.asm
+                    Delay   0x00001b    program     static C:\users\kennethpabillo\MPLABXProjects\bit-banging\DECODER.X\DECODER.asm
+                Increment   0x000018    program     static C:\users\kennethpabillo\MPLABXProjects\bit-banging\DECODER.X\DECODER.asm
                      Init   0x000004    program     static C:\users\kennethpabillo\MPLABXProjects\bit-banging\DECODER.X\DECODER.asm
                     Start   0x00000c    program     static C:\users\kennethpabillo\MPLABXProjects\bit-banging\DECODER.X\DECODER.asm
-                     loop   0x000020    program     static C:\users\kennethpabillo\MPLABXProjects\bit-banging\DECODER.X\DECODER.asm
+                     loop   0x000021    program     static C:\users\kennethpabillo\MPLABXProjects\bit-banging\DECODER.X\DECODER.asm
                   retfile   0x000004    program     static C:\users\kennethpabillo\MPLABXProjects\bit-banging\DECODER.X\DECODER.asm
 
 
@@ -43,8 +43,8 @@ Linker Map File - Created Mon Dec 15 10:59:37 2025
                     Start   0x00000c    program     static C:\users\kennethpabillo\MPLABXProjects\bit-banging\DECODER.X\DECODER.asm
                     Count   0x000011    program     static C:\users\kennethpabillo\MPLABXProjects\bit-banging\DECODER.X\DECODER.asm
                     Clear   0x000014    program     static C:\users\kennethpabillo\MPLABXProjects\bit-banging\DECODER.X\DECODER.asm
-                Increment   0x000017    program     static C:\users\kennethpabillo\MPLABXProjects\bit-banging\DECODER.X\DECODER.asm
-                    Delay   0x00001a    program     static C:\users\kennethpabillo\MPLABXProjects\bit-banging\DECODER.X\DECODER.asm
-                     loop   0x000020    program     static C:\users\kennethpabillo\MPLABXProjects\bit-banging\DECODER.X\DECODER.asm
+                Increment   0x000018    program     static C:\users\kennethpabillo\MPLABXProjects\bit-banging\DECODER.X\DECODER.asm
+                    Delay   0x00001b    program     static C:\users\kennethpabillo\MPLABXProjects\bit-banging\DECODER.X\DECODER.asm
+                     loop   0x000021    program     static C:\users\kennethpabillo\MPLABXProjects\bit-banging\DECODER.X\DECODER.asm
 
 
