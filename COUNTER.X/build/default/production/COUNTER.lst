@@ -1,4 +1,4 @@
-MPASM 5.87                       COUNTER.ASM   12-15-2025  10:46:54         PAGE  1
+MPASM 5.87                       COUNTER.ASM   12-15-2025  18:14:47         PAGE  1
 
 
 LOC  OBJECT CODE     LINE SOURCE TEXT
@@ -57,7 +57,7 @@ Warning[203]: Found opcode in column 1. (CLRF)
                       00029 
                       00030 
 000B                  00031 Start
-MPASM 5.87                       COUNTER.ASM   12-15-2025  10:46:54         PAGE  2
+MPASM 5.87                       COUNTER.ASM   12-15-2025  18:14:47         PAGE  2
 
 
 LOC  OBJECT CODE     LINE SOURCE TEXT
@@ -116,7 +116,7 @@ Message[305]: Using default destination of 1 (file).
                       00060 
                       00061 ; Set RA5 to 0 (off)
 Warning[203]: Found opcode in column 1. (BCF)
-MPASM 5.87                       COUNTER.ASM   12-15-2025  10:46:54         PAGE  3
+MPASM 5.87                       COUNTER.ASM   12-15-2025  18:14:47         PAGE  3
 
 
 LOC  OBJECT CODE     LINE SOURCE TEXT
@@ -139,9 +139,9 @@ Warning[203]: Found opcode in column 1. (goto)
 002A   2???           00075     goto Loop
                       00076                 
 002B                  00077 Delay
-002B   3006           00078     movlw D'6'
+002B   3002           00078     movlw D'2'
 002C   008C           00079     movwf CounterC
-002D   3018           00080     movlw D'24'
+002D   3006           00080     movlw D'6'
 002E   008D           00081     movwf CounterB
 002F   30A7           00082     movlw D'167'
 0030   008E           00083     movwf CounterA
@@ -158,7 +158,7 @@ Warning[203]: Found opcode in column 1. (goto)
                       00094 
 Warning[205]: Found directive in column 1. (end)
 3FF1                  00095 end
-MPASM 5.87                       COUNTER.ASM   12-15-2025  10:46:54         PAGE  4
+MPASM 5.87                       COUNTER.ASM   12-15-2025  18:14:47         PAGE  4
 
 
 SYMBOL TABLE
@@ -217,7 +217,7 @@ RB7                               00000007
 RBIE                              00000003
 RBIF                              00000000
 RD                                00000000
-MPASM 5.87                       COUNTER.ASM   12-15-2025  10:46:54         PAGE  5
+MPASM 5.87                       COUNTER.ASM   12-15-2025  18:14:47         PAGE  5
 
 
 SYMBOL TABLE
@@ -276,7 +276,7 @@ _WDTE_OFF                         00003FFB
 _WDTE_ON                          00003FFF
 _WDT_OFF                          00003FFB
 _WDT_ON                           00003FFF
-MPASM 5.87                       COUNTER.ASM   12-15-2025  10:46:54         PAGE  6
+MPASM 5.87                       COUNTER.ASM   12-15-2025  18:14:47         PAGE  6
 
 
 SYMBOL TABLE

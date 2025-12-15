@@ -1,3 +1,3 @@
 build/default/production/DECODER.o:  \
-	C:/users/kennethpabillo/MPLABXProjects/bit-banging/DECODER.X/DECODER.asm  \
+	C:/Users/johns/Downloads/coding-software/bit-banging/DECODER.X/DECODER.asm  \
 

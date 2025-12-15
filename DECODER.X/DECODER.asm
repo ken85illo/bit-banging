@@ -28,12 +28,28 @@ BCF STATUS, 5
 CLRF PORTA
 CLRF PORTB
 
-Start 
-   BTFSC PORTA, 0
-   call Count
-   BTFSS PORTA, 2
-   call Clear
-goto Start
+Start
+    ; If transmission just started (RA1 = 1)
+    BTFSS PORTA, 1
+    goto Start
+
+    ; If NON-cumulative mode
+    BTFSC PORTA, 2
+    goto WaitForPulses
+
+    ; Clear ONCE at start
+    CLRF PORTB
+
+WaitForPulses
+    BTFSC PORTA, 0
+    call Count
+
+    ; Stay here while sender is busy
+    BTFSC PORTA, 1
+    goto WaitForPulses
+
+    ; Transmission done ? HOLD value
+    goto Start
 
 Count
    call Increment
@@ -52,9 +68,9 @@ Increment
    return
 		
 Delay
-    movlw D'6'
+    movlw D'2'
     movwf CounterC
-    movlw D'24'
+    movlw D'6'
     movwf CounterB
     movlw D'167'
     movwf CounterA

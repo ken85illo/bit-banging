@@ -75,9 +75,9 @@ Blink
     goto Loop
 		
 Delay
-    movlw D'6'
+    movlw D'2'
     movwf CounterC
-    movlw D'24'
+    movlw D'6'
     movwf CounterB
     movlw D'167'
     movwf CounterA

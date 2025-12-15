@@ -1,4 +1,4 @@
-MPASM 5.87                       DECODER.ASM   12-15-2025  11:03:59         PAGE  1
+MPASM 5.87                       DECODER.ASM   12-15-2025  18:14:51         PAGE  1
 
 
 LOC  OBJECT CODE     LINE SOURCE TEXT
@@ -57,58 +57,79 @@ Warning[203]: Found opcode in column 1. (CLRF)
 Warning[203]: Found opcode in column 1. (CLRF)
 000B   0186           00029 CLRF PORTB
                       00030 
-MPASM 5.87                       DECODER.ASM   12-15-2025  11:03:59         PAGE  2
+MPASM 5.87                       DECODER.ASM   12-15-2025  18:14:51         PAGE  2
 
 
 LOC  OBJECT CODE     LINE SOURCE TEXT
   VALUE
 
-000C                  00031 Start 
-000C   1805           00032    BTFSC PORTA, 0
-000D   2???           00033    call Count
-000E   1D05           00034    BTFSS PORTA, 2
-000F   2???           00035    call Clear
-Warning[203]: Found opcode in column 1. (goto)
-0010   2???           00036 goto Start
-                      00037 
-0011                  00038 Count
-0011   2???           00039    call Increment
-0012   2???           00040    call Delay
-0013   0008           00041    return
-                      00042   
-0014                  00043 Clear
-0014   2???           00044    call Delay
-0015   1C85           00045    BTFSS PORTA, 1
-0016   0186           00046    CLRF PORTB
-0017   0008           00047    return
-                      00048                    
-0018                  00049 Increment
-0018   3001           00050    MOVLW 0x01
+000C                  00031 Start
+                      00032     ; If transmission just started (RA1 = 1)
+000C   1C85           00033     BTFSS PORTA, 1
+000D   2???           00034     goto Start
+                      00035 
+                      00036     ; If NON-cumulative mode
+000E   1905           00037     BTFSC PORTA, 2
+000F   2???           00038     goto WaitForPulses
+                      00039 
+                      00040     ; Clear ONCE at start
+0010   0186           00041     CLRF PORTB
+                      00042 
+0011                  00043 WaitForPulses
+0011   1805           00044     BTFSC PORTA, 0
+0012   2???           00045     call Count
+                      00046 
+                      00047     ; Stay here while sender is busy
+0013   1885           00048     BTFSC PORTA, 1
+0014   2???           00049     goto WaitForPulses
+                      00050 
+                      00051     ; Transmission done ? HOLD value
+0015   2???           00052     goto Start
+                      00053 
+0016                  00054 Count
+0016   2???           00055    call Increment
+0017   2???           00056    call Delay
+0018   0008           00057    return
+                      00058   
+0019                  00059 Clear
+0019   2???           00060    call Delay
+001A   1C85           00061    BTFSS PORTA, 1
+001B   0186           00062    CLRF PORTB
+001C   0008           00063    return
+                      00064                    
+001D                  00065 Increment
+001D   3001           00066    MOVLW 0x01
 Message[305]: Using default destination of 1 (file).
-0019   0786           00051    ADDWF PORTB
-001A   0008           00052    return
-                      00053                 
-001B                  00054 Delay
-001B   3006           00055     movlw D'6'
-001C   008C           00056     movwf CounterC
-001D   3018           00057     movlw D'24'
-001E   008D           00058     movwf CounterB
-001F   30A7           00059     movlw D'167'
-0020   008E           00060     movwf CounterA
-                      00061    
-0021                  00062 loop
-0021   0B8E           00063     decfsz CounterA, 1
-0022   2???           00064     goto loop
-0023   0B8D           00065     decfsz CounterB, 1
-0024   2???           00066     goto loop
-0025   0B8C           00067     decfsz CounterC, 1
-0026   2???           00068     goto loop
-0027   0000           00069     nop
-0028   0008           00070     return
-                      00071 
+001E   0786           00067    ADDWF PORTB
+001F   0008           00068    return
+                      00069                 
+0020                  00070 Delay
+0020   3002           00071     movlw D'2'
+0021   008C           00072     movwf CounterC
+0022   3006           00073     movlw D'6'
+0023   008D           00074     movwf CounterB
+0024   30A7           00075     movlw D'167'
+0025   008E           00076     movwf CounterA
+                      00077    
+0026                  00078 loop
+0026   0B8E           00079     decfsz CounterA, 1
+0027   2???           00080     goto loop
+0028   0B8D           00081     decfsz CounterB, 1
+0029   2???           00082     goto loop
+MPASM 5.87                       DECODER.ASM   12-15-2025  18:14:51         PAGE  3
+
+
+LOC  OBJECT CODE     LINE SOURCE TEXT
+  VALUE
+
+002A   0B8C           00083     decfsz CounterC, 1
+002B   2???           00084     goto loop
+002C   0000           00085     nop
+002D   0008           00086     return
+                      00087 
 Warning[205]: Found directive in column 1. (end)
-3FF1                  00072 end
-MPASM 5.87                       DECODER.ASM   12-15-2025  11:03:59         PAGE  3
+3FF1                  00088 end
+MPASM 5.87                       DECODER.ASM   12-15-2025  18:14:51         PAGE  4
 
 
 SYMBOL TABLE
@@ -116,13 +137,13 @@ SYMBOL TABLE
 
 BitBang                           0000001F
 C                                 00000000
-Clear                             00000014
-Count                             00000011
+Clear                             00000019
+Count                             00000016
 CounterA                          0000000E
 CounterB                          0000000D
 CounterC                          0000000C
 DC                                00000001
-Delay                             0000001B
+Delay                             00000020
 EEADR                             00000009
 EECON1                            00000088
 EECON2                            00000089
@@ -138,7 +159,7 @@ INTE                              00000004
 INTEDG                            00000006
 INTF                              00000001
 IRP                               00000007
-Increment                         00000018
+Increment                         0000001D
 Init                              00000004
 NOT_PD                            00000003
 NOT_RBPU                          00000007
@@ -167,7 +188,7 @@ RB6                               00000006
 RB7                               00000007
 RBIE                              00000003
 RBIF                              00000000
-MPASM 5.87                       DECODER.ASM   12-15-2025  11:03:59         PAGE  4
+MPASM 5.87                       DECODER.ASM   12-15-2025  18:14:51         PAGE  5
 
 
 SYMBOL TABLE
@@ -205,6 +226,7 @@ W                                 00000000
 WR                                00000001
 WREN                              00000002
 WRERR                             00000003
+WaitForPulses                     00000011
 Z                                 00000002
 _CONFIG                           00002007
 _CP_OFF                           00003FFF
@@ -225,21 +247,21 @@ _PWRTE_ON                         00003FF7
 _RC_OSC                           00003FFF
 _WDTE_OFF                         00003FFB
 _WDTE_ON                          00003FFF
-_WDT_OFF                          00003FFB
-MPASM 5.87                       DECODER.ASM   12-15-2025  11:03:59         PAGE  5
+MPASM 5.87                       DECODER.ASM   12-15-2025  18:14:51         PAGE  6
 
 
 SYMBOL TABLE
   LABEL                             VALUE 
 
+_WDT_OFF                          00003FFB
 _WDT_ON                           00003FFF
 _XT_OSC                           00003FFD
 __16F84A                          00000001
-loop                              00000021
+loop                              00000026
 retfile                           00000004
 
 Errors   :     0
-Warnings :    13 reported,     0 suppressed
+Warnings :    12 reported,     0 suppressed
 Messages :     3 reported,     0 suppressed
 
 
