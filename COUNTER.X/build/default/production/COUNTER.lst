@@ -1,4 +1,4 @@
-MPASM 5.87                       COUNTER.ASM   12-15-2025  18:27:47         PAGE  1
+MPASM 5.87                       COUNTER.ASM   1-11-2026  17:16:05         PAGE  1
 
 
 LOC  OBJECT CODE     LINE SOURCE TEXT
@@ -56,122 +56,160 @@ Warning[203]: Found opcode in column 1. (CLRF)
 000A   0186           00028 CLRF PORTB
                       00029 
                       00030 
-000B                  00031 Start
-MPASM 5.87                       COUNTER.ASM   12-15-2025  18:27:47         PAGE  2
+000B                  00031 STATE_Q0
+MPASM 5.87                       COUNTER.ASM   1-11-2026  17:16:05         PAGE  2
 
 
 LOC  OBJECT CODE     LINE SOURCE TEXT
   VALUE
 
-                      00032 
-Warning[203]: Found opcode in column 1. (MOVLW)
-000B   3000           00033 MOVLW D'0' ; 0 is default value
-                      00034 
-                      00035 ; Bit bang counter 1-9  
-Warning[203]: Found opcode in column 1. (BTFSC)
-000C   1805           00036 BTFSC PORTA, 0
-Warning[203]: Found opcode in column 1. (MOVLW)
-000D   3001           00037 MOVLW D'1'
-Warning[203]: Found opcode in column 1. (BTFSC)
-000E   1885           00038 BTFSC PORTA, 1
-Warning[203]: Found opcode in column 1. (MOVLW)
-000F   3002           00039 MOVLW D'2'
-Warning[203]: Found opcode in column 1. (BTFSC)
-0010   1905           00040 BTFSC PORTA, 2
-Warning[203]: Found opcode in column 1. (MOVLW)
-0011   3003           00041 MOVLW D'3'
-Warning[203]: Found opcode in column 1. (BTFSC)
-0012   1985           00042 BTFSC PORTA, 3
-Warning[203]: Found opcode in column 1. (MOVLW)
-0013   3004           00043 MOVLW D'4'
-Warning[203]: Found opcode in column 1. (BTFSC)
-0014   1A05           00044 BTFSC PORTA, 4
-Warning[203]: Found opcode in column 1. (MOVLW)
-0015   3005           00045 MOVLW D'5'
-Warning[203]: Found opcode in column 1. (BTFSC)
-0016   1806           00046 BTFSC PORTB, 0
-Warning[203]: Found opcode in column 1. (MOVLW)
-0017   3006           00047 MOVLW D'6'
-Warning[203]: Found opcode in column 1. (BTFSC)
-0018   1886           00048 BTFSC PORTB, 1
-Warning[203]: Found opcode in column 1. (MOVLW)
-0019   3007           00049 MOVLW D'7'
-Warning[203]: Found opcode in column 1. (BTFSC)
-001A   1906           00050 BTFSC PORTB, 2
-Warning[203]: Found opcode in column 1. (MOVLW)
-001B   3008           00051 MOVLW D'8'
-Warning[203]: Found opcode in column 1. (BTFSC)
-001C   1986           00052 BTFSC PORTB, 3
-Warning[203]: Found opcode in column 1. (MOVLW)
-001D   3009           00053 MOVLW D'9'
-                      00054 
-Warning[203]: Found opcode in column 1. (ADDLW)
-001E   3E01           00055 ADDLW D'1' ; offset by 1
-Warning[203]: Found opcode in column 1. (ADDWF)
+000B   3000           00032     MOVLW D'0' ; 0 is default value
+                      00033 
+                      00034     ; Bit bang counter 1-9      
+000C   1805           00035     BTFSC PORTA, 0
+000D   2???           00036     goto STATE_Q1 ; if RA0 = 1 
+                      00037     
+000E   1885           00038     BTFSC PORTA, 1
+000F   2???           00039     goto STATE_Q2 ; if RA1 = 1
+                      00040     
+0010   1905           00041     BTFSC PORTA, 2
+0011   2???           00042     goto STATE_Q3 ; if RA2 = 1
+                      00043     
+0012   1985           00044     BTFSC PORTA, 3
+0013   2???           00045     goto STATE_Q4 ; if RA3 = 1
+                      00046     
+0014   1A05           00047     BTFSC PORTA, 4
+0015   2???           00048     goto STATE_Q5 ; if RA4 = 1
+                      00049     
+0016   1806           00050     BTFSC PORTB, 0
+0017   2???           00051     goto STATE_Q6 ; if RB0 = 1
+                      00052     
+0018   1886           00053     BTFSC PORTB, 1
+0019   2???           00054     goto STATE_Q7 ; if RB1 = 1
+                      00055     
+001A   1906           00056     BTFSC PORTB, 2
+001B   2???           00057     goto STATE_Q8 ; if RB2 = 1
+                      00058     
+001C   1986           00059     BTFSC PORTB, 3
+001D   2???           00060     goto STATE_Q9 ; if RB3 = 1
+                      00061     
+001E   2???           00062     goto STATE_Q0 ; stays in STATE_Q0 when no input
+                      00063 
+001F                  00064 STATE_Q1
+001F   3001           00065     MOVLW D'1' ; adds 1 for 1 pulse
+0020   2???           00066     goto STATE_Q10 ; goto STATE_Q10 to send the pulses
+                      00067 
+0021                  00068 STATE_Q2
+0021   3002           00069     MOVLW D'2' ; adds 2 for 2 pulses
+0022   2???           00070     goto STATE_Q10 ; goto STATE_Q10 to send the pulses
+                      00071 
+0023                  00072 STATE_Q3
+0023   3003           00073     MOVLW D'3' ; adds 3 for 3 pulses
+0024   2???           00074     goto STATE_Q10 ; goto STATE_Q10 to send the pulses
+                      00075 
+0025                  00076 STATE_Q4
+0025   3004           00077     MOVLW D'4' ; adds 4 for 4 pulses
+0026   2???           00078     goto STATE_Q10 ; goto STATE_Q10 to send the pulses
+                      00079     
+0027                  00080 STATE_Q5
+0027   3005           00081     MOVLW D'5' ; adds 5 for 5 pulses
+0028   2???           00082     goto STATE_Q10 ; goto STATE_Q10 to send the pulses
+                      00083     
+0029                  00084 STATE_Q6
+MPASM 5.87                       COUNTER.ASM   1-11-2026  17:16:05         PAGE  3
+
+
+LOC  OBJECT CODE     LINE SOURCE TEXT
+  VALUE
+
+0029   3006           00085     MOVLW D'6' ; adds 6 for 6 pulses
+002A   2???           00086     goto STATE_Q10 ; goto STATE_Q10 to send the pulses
+                      00087     
+002B                  00088 STATE_Q7
+002B   3007           00089     MOVLW D'7' ; adds 7 for 7 pulses
+002C   2???           00090     goto STATE_Q10 ; goto STATE_Q10 to send the pulses
+                      00091     
+002D                  00092 STATE_Q8
+002D   3008           00093     MOVLW D'8' ; adds 8 for 8 pulses
+002E   2???           00094     goto STATE_Q10 ; goto STATE_Q10 to send the pulses
+                      00095     
+002F                  00096 STATE_Q9        
+002F   3009           00097     MOVLW D'9' ; adds 9 for 9 pulses
+0030   2???           00098     goto STATE_Q10 ; goto STATE_Q10 to send the pulses
+                      00099 
+0031                  00100 STATE_Q10
+0031   3E01           00101     ADDLW D'1' ; offset by 1
 Message[305]: Using default destination of 1 (file).
-001F   079F           00056 ADDWF BitBang
-0020                  00057 Loop
-0020   0B9F           00058      DECFSZ BitBang, 1
-0021   2???           00059      goto Blink
-                      00060 
-                      00061 ; Set RA5 to 0 (off)
-Warning[203]: Found opcode in column 1. (BCF)
-MPASM 5.87                       COUNTER.ASM   12-15-2025  18:27:47         PAGE  3
+0032   079F           00102     ADDWF BitBang
+                      00103     
+                      00104     ; Sets rising edge of pulse
+Warning[207]: Found label after column 1. (Loop)
+0033                  00105     Loop
+0033   0B9F           00106         DECFSZ BitBang, 1
+0034   2???           00107         goto Blink
+                      00108 
+                      00109     ; Set RA5 to 0 (off)
+0035   1286           00110     BCF PORTB, 5
+                      00111 
+0036   2???           00112     goto STATE_Q0
+                      00113 
+0037                  00114 STATE_Q11
+                      00115     ; Sets falling edge of pulse
+0037   2???           00116     Call Delay
+0038   1206           00117     BCF PORTB, 4
+0039   2???           00118     goto Loop
+                      00119     
+003A                  00120 Blink
+                      00121     ; Set RA5 to 1 (on)
+003A   1E86           00122     BTFSS PORTB, 5
+003B   1686           00123     BSF PORTB, 5
+                      00124     
+003C   2???           00125     Call Delay
+003D   1606           00126     BSF PORTB, 4
+                      00127     
+003E   2???           00128     goto STATE_Q11
+                      00129     
+                      00130                 
+003F                  00131 Delay
+003F   3002           00132     movlw D'2'
+0040   008C           00133     movwf CounterC
+0041   3006           00134     movlw D'6'
+0042   008D           00135     movwf CounterB
+MPASM 5.87                       COUNTER.ASM   1-11-2026  17:16:05         PAGE  4
 
 
 LOC  OBJECT CODE     LINE SOURCE TEXT
   VALUE
 
-0022   1286           00062 BCF PORTB, 5
-                      00063      
-Warning[203]: Found opcode in column 1. (goto)
-0023   2???           00064 goto Start
-                      00065 
-0024                  00066 Blink
-                      00067     ; Set RA5 to 1 (on)
-0024   1E86           00068     BTFSS PORTB, 5
-0025   1686           00069     BSF PORTB, 5
-                      00070     
-0026   2???           00071     Call Delay
-0027   1606           00072     BSF PORTB, 4
-0028   2???           00073     Call Delay
-0029   1206           00074     BCF PORTB, 4
-002A   2???           00075     goto Loop
-                      00076                 
-002B                  00077 Delay
-002B   3002           00078     movlw D'2'
-002C   008C           00079     movwf CounterC
-002D   3006           00080     movlw D'6'
-002E   008D           00081     movwf CounterB
-002F   30A7           00082     movlw D'167'
-0030   008E           00083     movwf CounterA
-                      00084    
-0031                  00085 loop
-0031   0B8E           00086     decfsz CounterA, 1
-0032   2???           00087     goto loop
-0033   0B8D           00088     decfsz CounterB, 1
-0034   2???           00089     goto loop
-0035   0B8C           00090     decfsz CounterC, 1
-0036   2???           00091     goto loop
-0037   0000           00092     nop
-0038   0008           00093     return
-                      00094 
+0043   30A7           00136     movlw D'167'
+0044   008E           00137     movwf CounterA
+                      00138    
+0045                  00139 loop
+0045   0B8E           00140     decfsz CounterA, 1
+0046   2???           00141     goto loop
+0047   0B8D           00142     decfsz CounterB, 1
+0048   2???           00143     goto loop
+0049   0B8C           00144     decfsz CounterC, 1
+004A   2???           00145     goto loop
+004B   0000           00146     nop
+004C   0008           00147     return
+                      00148 
 Warning[205]: Found directive in column 1. (end)
-3FF1                  00095 end
-MPASM 5.87                       COUNTER.ASM   12-15-2025  18:27:47         PAGE  4
+3FF1                  00149 end
+MPASM 5.87                       COUNTER.ASM   1-11-2026  17:16:05         PAGE  5
 
 
 SYMBOL TABLE
   LABEL                             VALUE 
 
 BitBang                           0000001F
-Blink                             00000024
+Blink                             0000003A
 C                                 00000000
 CounterA                          0000000E
 CounterB                          0000000D
 CounterC                          0000000C
 DC                                00000001
-Delay                             0000002B
+Delay                             0000003F
 EEADR                             00000009
 EECON1                            00000088
 EECON2                            00000089
@@ -188,7 +226,7 @@ INTEDG                            00000006
 INTF                              00000001
 IRP                               00000007
 Init                              00000004
-Loop                              00000020
+Loop                              00000033
 NOT_PD                            00000003
 NOT_RBPU                          00000007
 NOT_TO                            00000004
@@ -217,7 +255,7 @@ RB7                               00000007
 RBIE                              00000003
 RBIF                              00000000
 RD                                00000000
-MPASM 5.87                       COUNTER.ASM   12-15-2025  18:27:47         PAGE  5
+MPASM 5.87                       COUNTER.ASM   1-11-2026  17:16:05         PAGE  6
 
 
 SYMBOL TABLE
@@ -225,8 +263,19 @@ SYMBOL TABLE
 
 RP0                               00000005
 RP1                               00000006
+STATE_Q0                          0000000B
+STATE_Q1                          0000001F
+STATE_Q10                         00000031
+STATE_Q11                         00000037
+STATE_Q2                          00000021
+STATE_Q3                          00000023
+STATE_Q4                          00000025
+STATE_Q5                          00000027
+STATE_Q6                          00000029
+STATE_Q7                          0000002B
+STATE_Q8                          0000002D
+STATE_Q9                          0000002F
 STATUS                            00000003
-Start                             0000000B
 T0CS                              00000005
 T0IE                              00000005
 T0IF                              00000002
@@ -265,6 +314,12 @@ _FOSC_LP                          00003FFC
 _FOSC_XT                          00003FFD
 _HS_OSC                           00003FFE
 _IDLOC0                           00002000
+MPASM 5.87                       COUNTER.ASM   1-11-2026  17:16:05         PAGE  7
+
+
+SYMBOL TABLE
+  LABEL                             VALUE 
+
 _IDLOC1                           00002001
 _IDLOC2                           00002002
 _IDLOC3                           00002003
@@ -276,19 +331,13 @@ _WDTE_OFF                         00003FFB
 _WDTE_ON                          00003FFF
 _WDT_OFF                          00003FFB
 _WDT_ON                           00003FFF
-MPASM 5.87                       COUNTER.ASM   12-15-2025  18:27:47         PAGE  6
-
-
-SYMBOL TABLE
-  LABEL                             VALUE 
-
 _XT_OSC                           00003FFD
 __16F84A                          00000001
-loop                              00000031
+loop                              00000045
 retfile                           00000004
 
 Errors   :     0
-Warnings :    34 reported,     0 suppressed
+Warnings :    12 reported,     0 suppressed
 Messages :     3 reported,     0 suppressed
 
 

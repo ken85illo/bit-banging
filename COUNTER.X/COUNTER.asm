@@ -33,74 +33,75 @@ STATE_Q0
 
     ; Bit bang counter 1-9	
     BTFSC PORTA, 0
-    goto STATE_Q1
+    goto STATE_Q1 ; if RA0 = 1 
     
     BTFSC PORTA, 1
-    goto STATE_Q2
+    goto STATE_Q2 ; if RA1 = 1
     
     BTFSC PORTA, 2
-    goto STATE_Q3
+    goto STATE_Q3 ; if RA2 = 1
     
     BTFSC PORTA, 3
-    goto STATE_Q4
+    goto STATE_Q4 ; if RA3 = 1
     
     BTFSC PORTA, 4
-    goto STATE_Q5
+    goto STATE_Q5 ; if RA4 = 1
     
     BTFSC PORTB, 0
-    goto STATE_Q6
+    goto STATE_Q6 ; if RB0 = 1
     
     BTFSC PORTB, 1
-    goto STATE_Q7
+    goto STATE_Q7 ; if RB1 = 1
     
     BTFSC PORTB, 2
-    goto STATE_Q8
+    goto STATE_Q8 ; if RB2 = 1
     
     BTFSC PORTB, 3
-    goto STATE_Q9
+    goto STATE_Q9 ; if RB3 = 1
     
-    goto STATE_Q10
+    goto STATE_Q0 ; stays in STATE_Q0 when no input
 
 STATE_Q1
-    MOVLW D'1'
-    goto STATE_Q10
+    MOVLW D'1' ; adds 1 for 1 pulse
+    goto STATE_Q10 ; goto STATE_Q10 to send the pulses
 
 STATE_Q2
-    MOVLW D'2'
-    goto STATE_Q10
+    MOVLW D'2' ; adds 2 for 2 pulses
+    goto STATE_Q10 ; goto STATE_Q10 to send the pulses
 
 STATE_Q3
-    MOVLW D'3'
-    goto STATE_Q10
+    MOVLW D'3' ; adds 3 for 3 pulses
+    goto STATE_Q10 ; goto STATE_Q10 to send the pulses
 
 STATE_Q4
-    MOVLW D'4'
-    goto STATE_Q10
+    MOVLW D'4' ; adds 4 for 4 pulses
+    goto STATE_Q10 ; goto STATE_Q10 to send the pulses
     
 STATE_Q5
-    MOVLW D'5'
-    goto STATE_Q10
+    MOVLW D'5' ; adds 5 for 5 pulses
+    goto STATE_Q10 ; goto STATE_Q10 to send the pulses
     
 STATE_Q6
-    MOVLW D'6'
-    goto STATE_Q10
+    MOVLW D'6' ; adds 6 for 6 pulses
+    goto STATE_Q10 ; goto STATE_Q10 to send the pulses
     
 STATE_Q7
-    MOVLW D'7'
-    goto STATE_Q10
+    MOVLW D'7' ; adds 7 for 7 pulses
+    goto STATE_Q10 ; goto STATE_Q10 to send the pulses
     
 STATE_Q8
-    MOVLW D'8'
-    goto STATE_Q10
+    MOVLW D'8' ; adds 8 for 8 pulses
+    goto STATE_Q10 ; goto STATE_Q10 to send the pulses
     
 STATE_Q9	
-    MOVLW D'9'
-    goto STATE_Q10
+    MOVLW D'9' ; adds 9 for 9 pulses
+    goto STATE_Q10 ; goto STATE_Q10 to send the pulses
 
 STATE_Q10
     ADDLW D'1' ; offset by 1
     ADDWF BitBang
     
+    ; Sets rising edge of pulse
     Loop
 	DECFSZ BitBang, 1
 	goto Blink
@@ -111,6 +112,7 @@ STATE_Q10
     goto STATE_Q0
 
 STATE_Q11
+    ; Sets falling edge of pulse
     Call Delay
     BCF PORTB, 4
     goto Loop
