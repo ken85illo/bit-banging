@@ -1,4 +1,4 @@
-MPASM 5.87                       DECODER.ASM   12-15-2025  18:14:51         PAGE  1
+MPASM 5.87                       DECODER.ASM   1-11-2026  16:29:25         PAGE  1
 
 
 LOC  OBJECT CODE     LINE SOURCE TEXT
@@ -57,79 +57,88 @@ Warning[203]: Found opcode in column 1. (CLRF)
 Warning[203]: Found opcode in column 1. (CLRF)
 000B   0186           00029 CLRF PORTB
                       00030 
-MPASM 5.87                       DECODER.ASM   12-15-2025  18:14:51         PAGE  2
+MPASM 5.87                       DECODER.ASM   1-11-2026  16:29:25         PAGE  2
 
 
 LOC  OBJECT CODE     LINE SOURCE TEXT
   VALUE
 
-000C                  00031 Start
-                      00032     ; If transmission just started (RA1 = 1)
-000C   1C85           00033     BTFSS PORTA, 1
-000D   2???           00034     goto Start
-                      00035 
-                      00036     ; If NON-cumulative mode
-000E   1905           00037     BTFSC PORTA, 2
-000F   2???           00038     goto WaitForPulses
-                      00039 
-                      00040     ; Clear ONCE at start
-0010   0186           00041     CLRF PORTB
-                      00042 
-0011                  00043 WaitForPulses
-0011   1805           00044     BTFSC PORTA, 0
-0012   2???           00045     call Count
-                      00046 
-                      00047     ; Stay here while sender is busy
-0013   1885           00048     BTFSC PORTA, 1
-0014   2???           00049     goto WaitForPulses
-                      00050 
-                      00051     ; Transmission done ? HOLD value
-0015   2???           00052     goto Start
+000C                  00031 STATE_Q0
+000C   1C85           00032     BTFSS PORTA, 1
+000D   2???           00033     goto STATE_Q0 ; if RA1 = 0, stay in STATE Q0 there are no pulses
+                      00034     
+000E   2???           00035     goto STATE_Q1 ; if RA1 = 1, goto STATE_Q1 there are pulses
+                      00036     
+000F                  00037 STATE_Q1
+                      00038 
+000F   1905           00039     BTFSC PORTA, 2
+0010   2???           00040     goto STATE_Q3  ; if RA2 = 1, Proceed to STATE_Q3
+                      00041     
+0011   2???           00042     goto STATE_Q2 ; if RA2 = 0, Proceed to STATE_Q2
+                      00043 
+                      00044 ; NON-CUMULATIVE MODE    
+0012                  00045 STATE_Q2    
+                      00046     ; Clear display back to 0000 0000 
+0012   0186           00047     CLRF PORTB
+                      00048     
+0013   1805           00049     BTFSC PORTA, 0
+0014   2???           00050     goto STATE_Q3 ; if RA0 = 1, proceed to STATE_Q3
+                      00051     
+0015   2???           00052     goto STATE_Q2 ; if RA0 = 0, stay in STATE_Q2 
                       00053 
-0016                  00054 Count
-0016   2???           00055    call Increment
-0017   2???           00056    call Delay
-0018   0008           00057    return
-                      00058   
-0019                  00059 Clear
-0019   2???           00060    call Delay
-001A   1C85           00061    BTFSS PORTA, 1
-001B   0186           00062    CLRF PORTB
-001C   0008           00063    return
-                      00064                    
-001D                  00065 Increment
-001D   3001           00066    MOVLW 0x01
+                      00054 ; CUMULATIVE MODE    
+0016                  00055 STATE_Q3
+0016   1805           00056     BTFSC PORTA, 0
+0017   2???           00057     call STATE_Q4 ; if RA0 = 1, proceed to STATE_Q4
+                      00058 
+                      00059     ; Stay here while sender is still sending pulses
+0018   1885           00060     BTFSC PORTA, 1
+0019   2???           00061     goto STATE_Q3 ; if RA1 = 1, stay in STATE_Q3
+                      00062 
+                      00063     ; All pulses have been received
+001A   2???           00064     goto STATE_Q0 ; RA0 = 0, return to STATE_Q0 
+                      00065 
+001B                  00066 STATE_Q4
+                      00067    ; Increments display by 1 for every pulse  
+001B   3001           00068    MOVLW 0x01
 Message[305]: Using default destination of 1 (file).
-001E   0786           00067    ADDWF PORTB
-001F   0008           00068    return
-                      00069                 
-0020                  00070 Delay
-0020   3002           00071     movlw D'2'
-0021   008C           00072     movwf CounterC
-0022   3006           00073     movlw D'6'
-0023   008D           00074     movwf CounterB
-0024   30A7           00075     movlw D'167'
-0025   008E           00076     movwf CounterA
-                      00077    
-0026                  00078 loop
-0026   0B8E           00079     decfsz CounterA, 1
-0027   2???           00080     goto loop
-0028   0B8D           00081     decfsz CounterB, 1
-0029   2???           00082     goto loop
-MPASM 5.87                       DECODER.ASM   12-15-2025  18:14:51         PAGE  3
+001C   0786           00069    ADDWF PORTB
+001D   2???           00070    call Delay
+001E   0008           00071    return
+                      00072   
+001F                  00073 Clear
+001F   2???           00074    call Delay
+0020   1C85           00075    BTFSS PORTA, 1
+0021   0186           00076    CLRF PORTB
+0022   0008           00077    return
+                      00078                 
+0023                  00079 Delay
+0023   3002           00080     movlw D'2'
+0024   008C           00081     movwf CounterC
+0025   3006           00082     movlw D'6'
+MPASM 5.87                       DECODER.ASM   1-11-2026  16:29:25         PAGE  3
 
 
 LOC  OBJECT CODE     LINE SOURCE TEXT
   VALUE
 
-002A   0B8C           00083     decfsz CounterC, 1
-002B   2???           00084     goto loop
-002C   0000           00085     nop
-002D   0008           00086     return
-                      00087 
+0026   008D           00083     movwf CounterB
+0027   30A7           00084     movlw D'167'
+0028   008E           00085     movwf CounterA
+                      00086    
+0029                  00087 loop
+0029   0B8E           00088     decfsz CounterA, 1
+002A   2???           00089     goto loop
+002B   0B8D           00090     decfsz CounterB, 1
+002C   2???           00091     goto loop
+002D   0B8C           00092     decfsz CounterC, 1
+002E   2???           00093     goto loop
+002F   0000           00094     nop
+0030   0008           00095     return
+                      00096 
 Warning[205]: Found directive in column 1. (end)
-3FF1                  00088 end
-MPASM 5.87                       DECODER.ASM   12-15-2025  18:14:51         PAGE  4
+3FF1                  00097 end
+MPASM 5.87                       DECODER.ASM   1-11-2026  16:29:25         PAGE  4
 
 
 SYMBOL TABLE
@@ -137,13 +146,12 @@ SYMBOL TABLE
 
 BitBang                           0000001F
 C                                 00000000
-Clear                             00000019
-Count                             00000016
+Clear                             0000001F
 CounterA                          0000000E
 CounterB                          0000000D
 CounterC                          0000000C
 DC                                00000001
-Delay                             00000020
+Delay                             00000023
 EEADR                             00000009
 EECON1                            00000088
 EECON2                            00000089
@@ -159,7 +167,6 @@ INTE                              00000004
 INTEDG                            00000006
 INTF                              00000001
 IRP                               00000007
-Increment                         0000001D
 Init                              00000004
 NOT_PD                            00000003
 NOT_RBPU                          00000007
@@ -188,17 +195,21 @@ RB6                               00000006
 RB7                               00000007
 RBIE                              00000003
 RBIF                              00000000
-MPASM 5.87                       DECODER.ASM   12-15-2025  18:14:51         PAGE  5
+RD                                00000000
+RP0                               00000005
+MPASM 5.87                       DECODER.ASM   1-11-2026  16:29:25         PAGE  5
 
 
 SYMBOL TABLE
   LABEL                             VALUE 
 
-RD                                00000000
-RP0                               00000005
 RP1                               00000006
+STATE_Q0                          0000000C
+STATE_Q1                          0000000F
+STATE_Q2                          00000012
+STATE_Q3                          00000016
+STATE_Q4                          0000001B
 STATUS                            00000003
-Start                             0000000C
 T0CS                              00000005
 T0IE                              00000005
 T0IF                              00000002
@@ -226,7 +237,6 @@ W                                 00000000
 WR                                00000001
 WREN                              00000002
 WRERR                             00000003
-WaitForPulses                     00000011
 Z                                 00000002
 _CONFIG                           00002007
 _CP_OFF                           00003FFF
@@ -246,18 +256,18 @@ _PWRTE_OFF                        00003FFF
 _PWRTE_ON                         00003FF7
 _RC_OSC                           00003FFF
 _WDTE_OFF                         00003FFB
-_WDTE_ON                          00003FFF
-MPASM 5.87                       DECODER.ASM   12-15-2025  18:14:51         PAGE  6
+MPASM 5.87                       DECODER.ASM   1-11-2026  16:29:25         PAGE  6
 
 
 SYMBOL TABLE
   LABEL                             VALUE 
 
+_WDTE_ON                          00003FFF
 _WDT_OFF                          00003FFB
 _WDT_ON                           00003FFF
 _XT_OSC                           00003FFD
 __16F84A                          00000001
-loop                              00000026
+loop                              00000029
 retfile                           00000004
 
 Errors   :     0

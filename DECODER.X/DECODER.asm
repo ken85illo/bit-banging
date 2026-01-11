@@ -28,31 +28,45 @@ BCF STATUS, 5
 CLRF PORTA
 CLRF PORTB
 
-Start
-    ; If transmission just started (RA1 = 1)
+STATE_Q0
     BTFSS PORTA, 1
-    goto Start
+    goto STATE_Q0 ; if RA1 = 0, stay in STATE Q0 there are no pulses
+    
+    goto STATE_Q1 ; if RA1 = 1, goto STATE_Q1 there are pulses
+    
+STATE_Q1
 
-    ; If NON-cumulative mode
     BTFSC PORTA, 2
-    goto WaitForPulses
+    goto STATE_Q3  ; if RA2 = 1, Proceed to STATE_Q3
+    
+    goto STATE_Q2 ; if RA2 = 0, Proceed to STATE_Q2
 
-    ; Clear ONCE at start
+; NON-CUMULATIVE MODE    
+STATE_Q2    
+    ; Clear display back to 0000 0000 
     CLRF PORTB
-
-WaitForPulses
+    
     BTFSC PORTA, 0
-    call Count
+    goto STATE_Q3 ; if RA0 = 1, proceed to STATE_Q3
+    
+    goto STATE_Q2 ; if RA0 = 0, stay in STATE_Q2 
 
-    ; Stay here while sender is busy
+; CUMULATIVE MODE    
+STATE_Q3
+    BTFSC PORTA, 0
+    call STATE_Q4 ; if RA0 = 1, proceed to STATE_Q4
+
+    ; Stay here while sender is still sending pulses
     BTFSC PORTA, 1
-    goto WaitForPulses
+    goto STATE_Q3 ; if RA1 = 1, stay in STATE_Q3
 
-    ; Transmission done ? HOLD value
-    goto Start
+    ; All pulses have been received
+    goto STATE_Q0 ; RA0 = 0, return to STATE_Q0 
 
-Count
-   call Increment
+STATE_Q4
+   ; Increments display by 1 for every pulse  
+   MOVLW 0x01
+   ADDWF PORTB
    call Delay
    return
   
@@ -60,11 +74,6 @@ Clear
    call Delay
    BTFSS PORTA, 1
    CLRF PORTB
-   return
-		   
-Increment
-   MOVLW 0x01
-   ADDWF PORTB
    return
 		
 Delay
@@ -86,9 +95,3 @@ loop
     return
 
 end
-
-
-
-
-
-

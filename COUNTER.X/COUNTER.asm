@@ -28,41 +28,93 @@ BCF STATUS, 5
 CLRF PORTB
 
 
-Start
+STATE_Q0
+    MOVLW D'0' ; 0 is default value
 
-MOVLW D'0' ; 0 is default value
+    ; Bit bang counter 1-9	
+    BTFSC PORTA, 0
+    goto STATE_Q1
+    
+    BTFSC PORTA, 1
+    goto STATE_Q2
+    
+    BTFSC PORTA, 2
+    goto STATE_Q3
+    
+    BTFSC PORTA, 3
+    goto STATE_Q4
+    
+    BTFSC PORTA, 4
+    goto STATE_Q5
+    
+    BTFSC PORTB, 0
+    goto STATE_Q6
+    
+    BTFSC PORTB, 1
+    goto STATE_Q7
+    
+    BTFSC PORTB, 2
+    goto STATE_Q8
+    
+    BTFSC PORTB, 3
+    goto STATE_Q9
+    
+    goto STATE_Q10
 
-; Bit bang counter 1-9	
-BTFSC PORTA, 0
-MOVLW D'1'
-BTFSC PORTA, 1
-MOVLW D'2'
-BTFSC PORTA, 2
-MOVLW D'3'
-BTFSC PORTA, 3
-MOVLW D'4'
-BTFSC PORTA, 4
-MOVLW D'5'
-BTFSC PORTB, 0
-MOVLW D'6'
-BTFSC PORTB, 1
-MOVLW D'7'
-BTFSC PORTB, 2
-MOVLW D'8'
-BTFSC PORTB, 3
-MOVLW D'9'
+STATE_Q1
+    MOVLW D'1'
+    goto STATE_Q10
 
-ADDLW D'1' ; offset by 1
-ADDWF BitBang
-Loop
-     DECFSZ BitBang, 1
-     goto Blink
+STATE_Q2
+    MOVLW D'2'
+    goto STATE_Q10
 
-; Set RA5 to 0 (off)
-BCF PORTB, 5
-     
-goto Start
+STATE_Q3
+    MOVLW D'3'
+    goto STATE_Q10
 
+STATE_Q4
+    MOVLW D'4'
+    goto STATE_Q10
+    
+STATE_Q5
+    MOVLW D'5'
+    goto STATE_Q10
+    
+STATE_Q6
+    MOVLW D'6'
+    goto STATE_Q10
+    
+STATE_Q7
+    MOVLW D'7'
+    goto STATE_Q10
+    
+STATE_Q8
+    MOVLW D'8'
+    goto STATE_Q10
+    
+STATE_Q9	
+    MOVLW D'9'
+    goto STATE_Q10
+
+STATE_Q10
+    ADDLW D'1' ; offset by 1
+    ADDWF BitBang
+    
+    Loop
+	DECFSZ BitBang, 1
+	goto Blink
+
+    ; Set RA5 to 0 (off)
+    BCF PORTB, 5
+
+    goto STATE_Q0
+
+STATE_Q11
+    Call Delay
+    BCF PORTB, 4
+    goto Loop
+    
 Blink
     ; Set RA5 to 1 (on)
     BTFSS PORTB, 5
@@ -70,9 +122,9 @@ Blink
     
     Call Delay
     BSF PORTB, 4
-    Call Delay
-    BCF PORTB, 4
-    goto Loop
+    
+    goto STATE_Q11
+    
 		
 Delay
     movlw D'2'
@@ -93,6 +145,4 @@ loop
     return
 
 end
-
-
 
